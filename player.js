@@ -11,7 +11,7 @@ export default class Player {
         this.frameTimer = 0;
         this.game = game;
         this.width = 100;
-        this.height = 91.3;
+        this.height = 91.5;
         this.x = 0;
         this.y = this.game.height - this.height - this.game.groundMargin;
         this.vy = 0;
@@ -50,8 +50,9 @@ export default class Player {
     onGround() {
         return this.y + this.height >= this.game.height - this.game.groundMargin;
     }
-    setState(state) {
+    setState(state, speed) {
         this.currentState = this.states[state];
+        this.game.speed = this.game.maxSpeed * speed;
         this.currentState.enter();
     }
 }
