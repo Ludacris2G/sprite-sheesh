@@ -23,15 +23,22 @@ window.addEventListener('load', function() {
             this.UI = new UI(this);
             this.enemies = [];
             this.particles = [];
+            this.collisions = [];
+            this.maxParticles = 200;
             this.enemyTimer = 0;
             this.enemyInterval = 1000;
-            this.debug = true;
+            this.debug = false;
             this.score = 0;
             this.fontColor = 'black';
+            this.time = 0;
+            this.maxTime = 10000;
+            this.gameOver = false;
             this.player.currentState = this.player.states[0];
             this.player.currentState.enter();
         } 
         update(deltaTime) {
+            this.time += deltaTime;
+            if (this.time > this.maxTime) this.gameOver = true;
             this.background.update();
             this.player.update(this.input.keys, deltaTime);
             // handle enemies
@@ -50,6 +57,14 @@ window.addEventListener('load', function() {
                 particle.update();
                 if (particle.markedForDeletion) this.particles.splice(i, 1);
             });
+            if (this.particles.length > this.maxParticles) {
+                this.particles = this.particles.slice(0, this.maxParticles);
+            }
+            // handle collision sprites
+            this.collisions.forEach((collision, i) => {
+                collision.update(deltaTime);
+                if (collision.markedForDeletion) this.collisions.splice(i, 1);
+            })
         }
         draw(ctx) {
             this.background.draw(ctx);
@@ -60,6 +75,9 @@ window.addEventListener('load', function() {
             this.particles.forEach(particle => {
                 particle.draw(ctx);
             });
+            this.collisions.forEach(collision => {
+                collision.draw(ctx);
+            })
             this.UI.draw(ctx);
         }
         addEnemy() {
@@ -78,7 +96,7 @@ window.addEventListener('load', function() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         game.update(deltaTime);
         game.draw(ctx);
-        requestAnimationFrame(animate);
+        if (!game.gameOver) requestAnimationFrame(animate);
     }
     animate(0);
 });
