@@ -14,7 +14,7 @@ window.addEventListener('load', function() {
         constructor(width, height) {
             this.width = width;
             this.height = height;
-            this.groundMargin = 80;
+            this.groundMargin = 40;
             this.speed = 0;
             this.maxSpeed = 2;
             this.background = new Background(this);
@@ -33,6 +33,7 @@ window.addEventListener('load', function() {
             this.time = 0;
             this.maxTime = 10000;
             this.gameOver = false;
+            this.lives = 5;
             this.player.currentState = this.player.states[0];
             this.player.currentState.enter();
         } 
@@ -58,7 +59,7 @@ window.addEventListener('load', function() {
                 if (particle.markedForDeletion) this.particles.splice(i, 1);
             });
             if (this.particles.length > this.maxParticles) {
-                this.particles = this.particles.slice(0, this.maxParticles);
+                this.particles.length = this.maxParticles;
             }
             // handle collision sprites
             this.collisions.forEach((collision, i) => {
