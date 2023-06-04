@@ -27,7 +27,7 @@ export class UI {
         if (this.game.gameOver) {
             ctx.textAlign = 'center';
             ctx.font = this.fontSize * 2 + ' px ' + this.fontFamily;
-            if (this.game.score > 5) {
+            if (this.game.score > this.game.winningScore) {
                 ctx.fillText('おめでとうございます！！', this.game.width * 0.5, this.game.height * 0.5 - 20);
                 ctx.font = this.fontSize * 0.7 + ' px ' + this.fontFamily;
                 ctx.fillText('親分！', this.game.width * 0.5, this.game.height * 0.5 + 20);
